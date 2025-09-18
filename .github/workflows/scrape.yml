@@ -1,16 +1,14 @@
 name: Scrape & Score X Candidates
 
 on:
-  schedule:
-    - cron: '30 2 * * *'   # 02:30 UTC = 11:30 JST
-  workflow_dispatch: {}
+  workflow_dispatch:   # 👈 これだけで手動実行ボタンが出る！
 
 jobs:
-  run:
+  scrape:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Setup Python
         uses: actions/setup-python@v5
