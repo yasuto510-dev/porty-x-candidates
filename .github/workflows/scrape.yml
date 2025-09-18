@@ -23,7 +23,6 @@ jobs:
           pip install snscrape
           pip install -r requirements.txt
 
-
       - name: Prepare config
         env:
           SHEET_ID: ${{ secrets.SHEET_ID }}
@@ -36,9 +35,8 @@ jobs:
           print('config.yaml written')
           PY
 
-
       - name: Run scraper
-        env:
-          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
         run: |
           python src/scrape_and_score.py
+        env:
+          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
