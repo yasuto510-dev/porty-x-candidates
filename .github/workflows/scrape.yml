@@ -19,10 +19,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y snscrape
           python -m pip install --upgrade pip
+          pip install snscrape
           pip install -r requirements.txt
+
 
       - name: Prepare config
         run: |
