@@ -35,12 +35,13 @@ jobs:
           print('config.yaml written')
           PY
 
-      - name: Run scraper
-        run: |
-          if [ -f src/scrape_and_score.py ]; then
-            python src/scrape_and_score.py
-          else
-            python scrape_and_score.py
-          fi
-        env:
-          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+ - name: Run scraper
+   run: |
+     if [ -f src/scrape_and_score.py ]; then
+       python src/scrape_and_score.py
+     else
+       python scrape_and_score.py
+     fi
+   env:
+     GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+
