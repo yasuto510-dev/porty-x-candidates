@@ -30,7 +30,7 @@ jobs:
           text = pathlib.Path('config.sample.yaml').read_text(encoding='utf-8')
           text = text.replace('YOUR_SHEET_ID', os.environ.get('SHEET_ID',''))
           pathlib.Path('config.yaml').write_text(text, encoding='utf-8')
-          print('config.yaml written')
+          print('✅ config.yaml written')
           PY
 
       - name: Run scraper
@@ -44,7 +44,7 @@ jobs:
           fi
 
       - name: Upload results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: candidates-csv
           path: out/*.csv
