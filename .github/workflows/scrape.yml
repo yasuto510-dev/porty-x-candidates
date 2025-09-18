@@ -1,14 +1,14 @@
 name: Scrape & Score X Candidates
 
 on:
-  workflow_dispatch:   # 👈 これだけで手動実行ボタンが出る！
+  workflow_dispatch: {}   # 手動実行ボタンを出す
 
 jobs:
-  scrape:
+  run:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -28,18 +28,23 @@ jobs:
           python - << 'PY'
           import os, pathlib
           text = pathlib.Path('config.sample.yaml').read_text(encoding='utf-8')
-          text = text.replace('YOUR_SHEET_ID', os.environ['SHEET_ID'])
+          text = text.replace('YOUR_SHEET_ID', os.environ.get('SHEET_ID',''))
           pathlib.Path('config.yaml').write_text(text, encoding='utf-8')
           print('config.yaml written')
           PY
 
- - name: Run scraper
-   run: |
-     if [ -f src/scrape_and_score.py ]; then
-       python src/scrape_and_score.py
-     else
-       python scrape_and_score.py
-     fi
-   env:
-     GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+      - name: Run scraper
+        env:
+          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+        run: |
+          if [ -f src/scrape_and_score.py ]; then
+            python src/scrape_and_score.py
+          else
+            python scrape_and_score.py
+          fi
 
+      - name: Upload results
+        uses: actions/upload-artifact@v3
+        with:
+          name: candidates-csv
+          path: out/*.csv
