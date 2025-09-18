@@ -37,6 +37,10 @@ jobs:
 
       - name: Run scraper
         run: |
-          python src/scrape_and_score.py
+          if [ -f src/scrape_and_score.py ]; then
+            python src/scrape_and_score.py
+          else
+            python scrape_and_score.py
+          fi
         env:
           GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
