@@ -25,9 +25,17 @@ jobs:
 
 
       - name: Prepare config
+        env:
+          SHEET_ID: ${{ secrets.SHEET_ID }}
         run: |
-          cp config.sample.yaml config.yaml
-          sed -i "s/YOUR_SHEET_ID/${{ secrets.SHEET_ID }}/" config.yaml
+          python - << 'PY'
+          import os, pathlib
+          text = pathlib.Path('config.sample.yaml').read_text(encoding='utf-8')
+          text = text.replace('YOUR_SHEET_ID', os.environ['SHEET_ID'])
+          pathlib.Path('config.yaml').write_text(text, encoding='utf-8')
+          print('config.yaml written')
+          PY
+
 
       - name: Run scraper
         env:
